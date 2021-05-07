@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">ProductDetection</string>
+    <string name="title_activity_main2">MainActivity</string>
+    <string name="title_home">Home</string>
+    <string name="favorite">Favorite</string>
+    <string name="setting">Settings</string>
 </resources>
