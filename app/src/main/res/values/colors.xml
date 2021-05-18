@@ -7,7 +7,8 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="biru_gelap">#283593</color>
-    <color name="kuning">#c8a415</color>
-    <color name="orange">#ffa726</color>
+    <color name="biru_gelap">#4697B9</color>
+    <color name="cream">#D8B293</color>
+    <color name="orange">#C0713F</color>
+    <color name="whitee">#F6F5FE</color>
 </resources>
