@@ -7,4 +7,10 @@
     <string name="todo">TODO</string>
     <string name="take_photo">Take Photo</string>
     <string name="image_preview">Preview</string>
+    <string name="Recommendation">Recommendation</string>
+    <string name="namaikm">Nama IKM</string>
+    <string name="alamat">Alamat IKM</string>
+    <string name="desc">description</string>
+    <string name="result">Result:</string>
+    <string name="item">Item Barang Jadi</string>
 </resources>
