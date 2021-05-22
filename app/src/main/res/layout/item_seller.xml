@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardview"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:foreground="@drawable/bg_ripple_white"
+        app:cardCornerRadius="18dp"
+        app:cardElevation="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <ImageView
+        android:id="@+id/img_poster"
+        android:layout_width="192dp"
+        android:layout_height="128dp"
+        android:layout_marginStart="18dp"
+        android:layout_marginTop="18dp"
+        android:layout_marginBottom="50dp"
+        android:elevation="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="ContentDescription"
+        tools:src="@drawable/ikm_1" />
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="180dp"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/helvetica"
+        android:text="@string/namaikm"
+        app:layout_constraintStart_toEndOf="@+id/img_poster"
+        app:layout_constraintTop_toTopOf="@+id/cardview"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"/>
+
+    <TextView
+        android:id="@+id/alamat"
+        android:layout_width="180dp"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/helvetica"
+        android:text="@string/alamat"
+        app:layout_constraintStart_toEndOf="@+id/img_poster"
+        app:layout_constraintTop_toBottomOf="@+id/title"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="16dp"/>
+
+    <TextView
+        android:id="@+id/desc"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/helvetica"
+        android:text="@string/desc"
+        app:layout_constraintTop_toBottomOf="@+id/img_poster" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
