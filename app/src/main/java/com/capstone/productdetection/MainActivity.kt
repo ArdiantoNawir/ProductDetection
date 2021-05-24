@@ -4,15 +4,12 @@ import android.content.Intent
 import android.os.Bundle
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat.startActivity
-import androidx.navigation.Navigation.findNavController
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.capstone.productdetection.databinding.ActivityMainBinding
-import com.capstone.productdetection.ui.capture.CaptureActivity
-import com.synnapps.carouselview.ImageListener
+import com.capstone.productdetection.ui.capture.CaptureFragment
 
 class MainActivity : AppCompatActivity() {
 
@@ -34,7 +31,7 @@ class MainActivity : AppCompatActivity() {
         navView.setupWithNavController(navController)
 
         binding.fabutton.setOnClickListener {
-            val intent = Intent(this, CaptureActivity::class.java)
+            val intent = Intent(this, CaptureFragment::class.java)
             startActivity(intent)
         }
     }
