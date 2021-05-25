@@ -65,7 +65,6 @@
         android:text="@string/alamat"
         android:textColor="@color/black"
         android:textSize="20sp"
-        app:layout_constraintBottom_toTopOf="@+id/tv_release_date"
         app:layout_constraintEnd_toEndOf="@+id/tv_title"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/tv_title"

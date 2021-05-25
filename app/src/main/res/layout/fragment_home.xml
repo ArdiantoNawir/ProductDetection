@@ -34,12 +34,13 @@
         android:layout_height="wrap_content"
         android:textAlignment="textStart"
         android:textSize="20sp"
+        android:textColor="@color/black"
         app:layout_constraintTop_toBottomOf="@+id/carouselView"
         android:layout_marginTop="20dp"
         android:text="@string/Recommendation"/>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_recommen"
+        android:id="@+id/rv_recommended"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@+id/text_home"

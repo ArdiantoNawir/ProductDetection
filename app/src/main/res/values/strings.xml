@@ -7,13 +7,13 @@
     <string name="todo">TODO</string>
     <string name="take_photo">Take Photo</string>
     <string name="image_preview">Preview</string>
-    <
-    <
-    <
-    <
-    <
-    <
-    < HEAD
+<!--    <-->
+<!--    <-->
+<!--    <-->
+<!--    <-->
+<!--    <-->
+<!--    <-->
+<!--    < HEAD-->
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     =======
@@ -23,5 +23,5 @@
     <string name="desc">description</string>
     <string name="result">Result:</string>
     <string name="item">Item Barang Jadi</string>
-    >>>>>>> 878d66b6c905ce2035ed49de796d90b70e7e5333
+<!--    >>>>>>> 878d66b6c905ce2035ed49de796d90b70e7e5333-->
 </resources>

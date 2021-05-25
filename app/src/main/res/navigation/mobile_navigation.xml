@@ -12,14 +12,14 @@
         tools:layout="@layout/fragment_home" />
 
     <fragment
-        android:id="@+id/navigation_dashboard"
+        android:id="@+id/navigation_favorite"
         android:name="com.capstone.productdetection.ui.favorite.FavoriteFragment"
         android:label="@string/favorite"
         tools:layout="@layout/fragment_favorite" />
 
     <fragment
-        android:id="@+id/navigation_notifications"
-        android:name="com.capstone.productdetection.ui.settings.SettingsFragment"
+        android:id="@+id/navigation_Capture"
+        android:name="com.capstone.productdetection.ui.capture.CaptureFragment"
         android:label="@string/setting"
-        tools:layout="@layout/fragment_settings" />
+        tools:layout="@layout/fragment_capture" />
 </navigation>

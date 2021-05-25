@@ -8,6 +8,7 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.capstone.productdetection.R
 import com.capstone.productdetection.databinding.FragmentHomeBinding
 import com.synnapps.carouselview.ImageListener
@@ -15,39 +16,51 @@ import com.synnapps.carouselview.ImageListener
 class HomeFragment : Fragment() {
 
     private lateinit var homeViewModel: HomeViewModel
-    private var _binding: FragmentHomeBinding? = null
+    private lateinit var homeBinding: FragmentHomeBinding
 
-    private val binding get() = _binding!!
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        homeViewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
+
 
 //carouselView.pageCount = carouselImages.size
 //carouselView.setImageListener(imageListener)
 // aku lihatnya di homeactivity di step nya, tapi kalo dimasukin fragment kurang tau aku
 
-        _binding = FragmentHomeBinding.inflate(inflater, container, false)
-        val root: View = binding.root
-
-        val textView: TextView = binding.textHome
-        homeViewModel.text.observe(viewLifecycleOwner, Observer {
-            textView.text = it
-        })
-        return root
+        homeBinding = FragmentHomeBinding.inflate(inflater, container, false)
+        return homeBinding.root
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
-    val carouselImages = intArrayOf(
-        R.drawable.ikm_1,
-        R.drawable.ikm_2,
-        R.drawable.ikm_3,
-        R.drawable.ikm_4
-    )
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
-    val imageListener = ImageListener {position, imageView ->
-        imageView.setImageResource(carouselImages[position])
+        if (activity != null) {
+            homeViewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
+
+            val textView: TextView = homeBinding.textHome
+            homeViewModel.text.observe(viewLifecycleOwner, Observer {
+                textView.text = it
+            })
+
+            val listProducer = homeViewModel.getRecomended()
+            val homeAdapter = HomeAdapter()
+            homeAdapter.setRecommended(listProducer)
+
+            with(homeBinding.rvRecommended) {
+                layoutManager = LinearLayoutManager(context)
+                setHasFixedSize(true)
+                adapter = homeAdapter
+            }
+
+        }
     }
+//    val carouselImages = intArrayOf(
+//        R.drawable.ikm_1,
+//        R.drawable.ikm_2,
+//        R.drawable.ikm_3,
+//        R.drawable.ikm_4
+//    )
+//
+//    val imageListener = ImageListener {position, imageView ->
+//        imageView.setImageResource(carouselImages[position])
+//    }
 }
