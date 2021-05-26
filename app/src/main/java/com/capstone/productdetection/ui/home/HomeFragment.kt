@@ -6,20 +6,24 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.capstone.productdetection.R
 import com.capstone.productdetection.databinding.FragmentHomeBinding
-import com.synnapps.carouselview.ImageListener
 
 class HomeFragment : Fragment() {
 
     private lateinit var homeViewModel: HomeViewModel
-    private lateinit var homeBinding: FragmentHomeBinding
+    private var homeBinding: FragmentHomeBinding? = null
+    private val binding get() = homeBinding!!
 
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
 
 
 //carouselView.pageCount = carouselImages.size
@@ -27,17 +31,22 @@ class HomeFragment : Fragment() {
 // aku lihatnya di homeactivity di step nya, tapi kalo dimasukin fragment kurang tau aku
 
         homeBinding = FragmentHomeBinding.inflate(inflater, container, false)
-        return homeBinding.root
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        binding.rvRecommended.setOnClickListener {
+//            Navigation.createNavigateOnClickListener(R.id.action_navigation_home_to_detailActivity)
+            view.findNavController().navigate(R.id.action_navigation_home_to_detailActivity)
+        }
+
         if (activity != null) {
             homeViewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
 
-            val textView: TextView = homeBinding.textHome
-            homeViewModel.text.observe(viewLifecycleOwner, Observer {
+            val textView: TextView = binding.textHome
+            homeViewModel.text.observe(viewLifecycleOwner, {
                 textView.text = it
             })
 
@@ -45,13 +54,18 @@ class HomeFragment : Fragment() {
             val homeAdapter = HomeAdapter()
             homeAdapter.setRecommended(listProducer)
 
-            with(homeBinding.rvRecommended) {
+            with(binding.rvRecommended) {
                 layoutManager = LinearLayoutManager(context)
                 setHasFixedSize(true)
                 adapter = homeAdapter
             }
 
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        homeBinding = null
     }
 //    val carouselImages = intArrayOf(
 //        R.drawable.ikm_1,

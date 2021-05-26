@@ -5,51 +5,39 @@ import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
+import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.widget.Button
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import com.capstone.productdetection.databinding.FragmentCaptureBinding
+import com.capstone.productdetection.R
+import com.capstone.productdetection.databinding.ActivityCaptureBinding
 
-
-class CaptureFragment : Fragment() {
+class CaptureActivity : AppCompatActivity() {
 
     companion object {
         private const val CAMERA_PERMISSION_CODE = 1
         private const val CAMERA_REQUEST_CODE = 2
     }
 
-    private lateinit var captureBinding: FragmentCaptureBinding
+    private lateinit var captureBinding: ActivityCaptureBinding
 
-
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        // Inflate the layout for this fragment
+    override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        captureBinding = ActivityCaptureBinding.inflate(layoutInflater)
 
-        captureBinding = FragmentCaptureBinding.inflate(layoutInflater)
-        val root : View = captureBinding.root
-        val button: Button = captureBinding.btn
-
-        button.setOnClickListener {
-            if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
+        setContentView(captureBinding.root)
+        captureBinding.btn.setOnClickListener {
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
                 val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
                 startActivityForResult(intent, CAMERA_REQUEST_CODE)
             } else {
                 ActivityCompat.requestPermissions(
-                    requireActivity(), arrayOf(Manifest.permission.CAMERA),
-                    CAMERA_PERMISSION_CODE
+                    this, arrayOf(Manifest.permission.CAMERA), CAMERA_PERMISSION_CODE
                 )
             }
         }
-
-
-        return root
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
@@ -60,7 +48,7 @@ class CaptureFragment : Fragment() {
                 val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
                 startActivityForResult(intent, CAMERA_PERMISSION_CODE)
             } else {
-                Toast.makeText(requireContext(), "Oops you just denied the permission for camera", Toast.LENGTH_LONG).show()
+                Toast.makeText(this, "Oops you just denied the permission for camera", Toast.LENGTH_LONG).show()
             }
         }
     }
