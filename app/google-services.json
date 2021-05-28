@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "519576426322",
+    "project_id": "productdetection-cap0124",
+    "storage_bucket": "productdetection-cap0124.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:519576426322:android:5d4b12404a5aa309dd4c8b",
+        "android_client_info": {
+          "package_name": "com.capstone.productdetection"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "519576426322-vqkmp8ol2ss02d682u5quuqjo144ojsh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBH9crMAoPrXgPO2ICkRZP3dXxAQ6TUcAw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "519576426322-vqkmp8ol2ss02d682u5quuqjo144ojsh.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
