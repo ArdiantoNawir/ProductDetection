@@ -1,23 +1,15 @@
 package com.capstone.productdetection
 
-import android.Manifest
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.os.Bundle
-import android.provider.MediaStore
-import android.widget.Toast
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.capstone.productdetection.databinding.ActivityMainBinding
 import com.capstone.productdetection.ui.capture.CaptureActivity
-import com.capstone.productdetection.ui.capture.CaptureTestActivity
-import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
 class MainActivity : AppCompatActivity() {
@@ -42,7 +34,7 @@ class MainActivity : AppCompatActivity() {
         navView.setupWithNavController(navController)
 
         binding.fabutton.setOnClickListener {
-                val intent = Intent(this, CaptureTestActivity::class.java)
+                val intent = Intent(this, CaptureActivity::class.java)
                 startActivity(intent)
         }
 
