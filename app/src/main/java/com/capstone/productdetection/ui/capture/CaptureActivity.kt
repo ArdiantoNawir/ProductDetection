@@ -33,7 +33,7 @@ class CaptureActivity : AppCompatActivity() {
     companion object {
         private const val CAMERA_PERMISSION_CODE = 1
         private const val CAMERA_REQUEST_CODE = 2
-        const val TAG = "TFLite - ODT"
+        const val TAG = "TFLite"
         const val REQUEST_IMAGE_CAPTURE: Int = 1
         private const val MAX_FONT_SIZE = 96F
     }
@@ -55,6 +55,10 @@ class CaptureActivity : AppCompatActivity() {
             }
         }
         inputImageView = captureBinding.ivImage
+
+        val filename = "labels.txt"
+        val inputString = application.assets.open(filename).bufferedReader().use { it.readText() }
+        val materialList = inputString.split("\n")
 
     }
 
@@ -80,11 +84,8 @@ class CaptureActivity : AppCompatActivity() {
         }
     }
 
-    /**
-     * runObjectDetection(bitmap: Bitmap)
-     *      TFLite Object Detection function
-     */
     private fun runObjectDetection(bitmap: Bitmap) {
+
         val image = TensorImage.fromBitmap(bitmap)
 
         val options = ObjectDetector.ObjectDetectorOptions.builder()
@@ -94,17 +95,15 @@ class CaptureActivity : AppCompatActivity() {
 
         val detector = ObjectDetector.createFromFileAndOptions(
             this,
-            "converted_model.tflite",
+            "model_v2.tflite",
             options
         )
 
         val results = detector.detect(image)
 
-//        debugPrint(results)
-
         val resultToDisplay = results.map {
             val category = it.categories.first()
-            val text = "${category.label}, ${category.score.times(100).toInt()}"
+            val text = "${category.label}, ${category.score.times(100).toInt()}%"
 
             DetectionResult(it.boundingBox, text)
         }
@@ -115,10 +114,7 @@ class CaptureActivity : AppCompatActivity() {
         }
     }
 
-    /**
-     * setViewAndDetect(bitmap: Bitmap)
-     *      Set image to view and call object detection
-     */
+
     private fun setViewAndDetect(bitmap: Bitmap) {
         // Display capture image
         inputImageView.setImageBitmap(bitmap)
@@ -126,7 +122,9 @@ class CaptureActivity : AppCompatActivity() {
         // Run ODT and display result
         // Note that we run this in the background thread to avoid blocking the app UI because
         // TFLite object detection is a synchronised process.
-        lifecycleScope.launch(Dispatchers.Default) { runObjectDetection(bitmap) }
+        lifecycleScope.launch(Dispatchers.Default) {
+            runObjectDetection(bitmap)
+        }
     }
 
     /**
@@ -231,7 +229,7 @@ class CaptureActivity : AppCompatActivity() {
                 photoFile?.also {
                     val photoURI: Uri = FileProvider.getUriForFile(
                         this,
-                        "org.tensorflow.codelabs.objectdetection.fileprovider",
+                        "com.capstone.productdetection.fileprovider",
                         it
                     )
                     takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)

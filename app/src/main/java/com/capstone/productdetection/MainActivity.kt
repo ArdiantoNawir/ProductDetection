@@ -10,7 +10,6 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.capstone.productdetection.databinding.ActivityMainBinding
 import com.capstone.productdetection.ui.capture.CaptureActivity
-import java.util.concurrent.Executors
 
 class MainActivity : AppCompatActivity() {
 
