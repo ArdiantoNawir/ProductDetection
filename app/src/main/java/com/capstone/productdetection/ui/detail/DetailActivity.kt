@@ -4,7 +4,9 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.capstone.productdetection.R
+import com.capstone.productdetection.ViewModelFactory
 import com.capstone.productdetection.databinding.ActivityDetailBinding
 import com.capstone.productdetection.databinding.ContentDetailBinding
 import com.capstone.productdetection.model.utils.DataModel
@@ -15,42 +17,42 @@ class DetailActivity : AppCompatActivity() {
         const val EXTRA_PRODUCER = "extra_producer"
     }
 
-    private lateinit var detailProducer: ContentDetailBinding
+    private lateinit var detailProducerBinding: ContentDetailBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         val activityDetailBinding = ActivityDetailBinding.inflate(layoutInflater)
-        detailProducer = activityDetailBinding.detail
-
+        detailProducerBinding = activityDetailBinding.detail
 
         setContentView(activityDetailBinding.root)
 
         supportActionBar?.title = "Detail"
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        val viewModel = ViewModelProvider(this@DetailActivity, ViewModelProvider.NewInstanceFactory())[DetailViewModel::class.java]
+        val factory = ViewModelFactory.getInstance(this)
+        val viewModel = ViewModelProvider(this@DetailActivity, factory)[DetailViewModel::class.java]
 
         val extras = intent.extras
         if (extras != null) {
-            val producerName = extras.getString(EXTRA_PRODUCER)
+            val producerId = extras.getInt(EXTRA_PRODUCER)
 
-            if (producerName != null) {
-                val dummyProducer = viewModel.getDetail(producerName)
-                showDetailProducer(dummyProducer)
-            }
+            viewModel.getDetail(producerId).observe(this, { results ->
+                showDetailProducer(results)
+            })
         }
     }
 
     private fun showDetailProducer(producer: DataModel) {
-        detailProducer.tvTitle.text = producer.title
-        detailProducer.tvDesc.text = producer.desc
-        detailProducer.tvAlamat.text = producer.location
+        detailProducerBinding.tvTitle.text = producer.title
+        detailProducerBinding.tvDesc.text = producer.desc
+        detailProducerBinding.tvAlamat.text = producer.location
         Glide.with(this)
             .load(producer.image)
-            .into(detailProducer.imgPoster)
+            .transform(RoundedCorners(20))
+            .into(detailProducerBinding.imgPoster)
         Glide.with(this)
             .load(producer.image)
-            .into(detailProducer.imgPosterHeader)
+            .into(detailProducerBinding.imgPosterHeader)
     }
 }

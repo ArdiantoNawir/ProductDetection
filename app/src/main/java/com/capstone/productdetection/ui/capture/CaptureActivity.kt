@@ -42,6 +42,8 @@ class CaptureActivity : AppCompatActivity() {
     private lateinit var inputImageView: ImageView
     private lateinit var currentPhotoPath: String
 
+    val finalTextResult = ""
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         captureBinding = ActivityCaptureBinding.inflate(layoutInflater)
@@ -55,11 +57,6 @@ class CaptureActivity : AppCompatActivity() {
             }
         }
         inputImageView = captureBinding.ivImage
-
-        val filename = "labels.txt"
-        val inputString = application.assets.open(filename).bufferedReader().use { it.readText() }
-        val materialList = inputString.split("\n")
-
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
@@ -89,13 +86,13 @@ class CaptureActivity : AppCompatActivity() {
         val image = TensorImage.fromBitmap(bitmap)
 
         val options = ObjectDetector.ObjectDetectorOptions.builder()
-            .setMaxResults(5)
+            .setMaxResults(1)
             .setScoreThreshold(0.5f)
             .build()
 
         val detector = ObjectDetector.createFromFileAndOptions(
             this,
-            "model_v2.tflite",
+            "lite-model_efficientdet_lite0_detection_metadata_1.tflite",
             options
         )
 
@@ -103,10 +100,16 @@ class CaptureActivity : AppCompatActivity() {
 
         val resultToDisplay = results.map {
             val category = it.categories.first()
-            val text = "${category.label}, ${category.score.times(100).toInt()}%"
+            val text = "${category.label},${category.displayName} ${category.score.times(100).toInt()}%"
 
+
+            captureBinding.result.text = finalTextResult
             DetectionResult(it.boundingBox, text)
+
         }
+
+
+
 
         val imgWithResult = drawDetectionResult(bitmap, resultToDisplay)
         runOnUiThread {
@@ -176,16 +179,6 @@ class CaptureActivity : AppCompatActivity() {
         }
     }
 
-//    /**
-//     * getSampleImage():
-//     *      Get image form drawable and convert to bitmap.
-//     */
-//    private fun getSampleImage(drawable: Int): Bitmap {
-//        return BitmapFactory.decodeResource(resources, drawable, BitmapFactory.Options().apply {
-//            inMutable = true
-//        })
-//    }
-
     /**
      * rotateImage():
      *     Decodes and crops the captured image from camera.
@@ -242,12 +235,9 @@ class CaptureActivity : AppCompatActivity() {
      * drawDetectionResult(bitmap: Bitmap, detectionResults: List<DetectionResult>
      *      Draw a box around each objects and show the object's name.
      */
-    private fun drawDetectionResult(
-        bitmap: Bitmap,
-        detectionResults: List<DetectionResult>
-    ): Bitmap {
+    private fun drawDetectionResult(bitmap: Bitmap, detectionResults: List<DetectionResult>): Bitmap {
         val outputBitmap = bitmap.copy(Bitmap.Config.ARGB_8888, true)
-        val canvas = Canvas(outputBitmap)
+//        val canvas = Canvas(outputBitmap)
         val pen = Paint()
         pen.textAlign = Paint.Align.LEFT
 
@@ -257,7 +247,7 @@ class CaptureActivity : AppCompatActivity() {
             pen.strokeWidth = 8F
             pen.style = Paint.Style.STROKE
             val box = it.boundingBox
-            canvas.drawRect(box, pen)
+//            canvas.drawRect(box, pen)
 
 
             val tagSize = Rect(0, 0, 0, 0)
@@ -274,12 +264,12 @@ class CaptureActivity : AppCompatActivity() {
             // adjust the font size so texts are inside the bounding box
             if (fontSize < pen.textSize) pen.textSize = fontSize
 
-            var margin = (box.width() - tagSize.width()) / 2.0F
-            if (margin < 0F) margin = 0F
-            canvas.drawText(
-                it.text, box.left + margin,
-                box.top + tagSize.height().times(1F), pen
-            )
+//            var margin = (box.width() - tagSize.width()) / 2.0F
+//            if (margin < 0F) margin = 0F
+//            canvas.drawText(
+//                it.text, box.left + margin,
+//                box.top + tagSize.height().times(1F), pen
+//            )
         }
         return outputBitmap
     }

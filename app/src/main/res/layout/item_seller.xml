@@ -46,7 +46,7 @@
         android:id="@+id/alamat"
         android:layout_width="180dp"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/montserrat"
+        android:fontFamily="@font/muli"
         android:text="@string/alamat"
         app:layout_constraintStart_toEndOf="@+id/img_poster"
         app:layout_constraintTop_toBottomOf="@+id/title"

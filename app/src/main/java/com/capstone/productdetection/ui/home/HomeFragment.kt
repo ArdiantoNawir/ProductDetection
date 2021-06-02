@@ -4,12 +4,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.capstone.productdetection.R
+import com.capstone.productdetection.ViewModelFactory
 import com.capstone.productdetection.databinding.FragmentHomeBinding
 
 class HomeFragment : Fragment() {
@@ -18,20 +18,25 @@ class HomeFragment : Fragment() {
     private var homeBinding: FragmentHomeBinding? = null
     private val binding get() = homeBinding!!
 
+    private var simpleImage = intArrayOf(
+        R.drawable.akrilik,
+        R.drawable.berrysablon,
+        R.drawable.daur
+    )
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-
-
-//carouselView.pageCount = carouselImages.size
-//carouselView.setImageListener(imageListener)
-// aku lihatnya di homeactivity di step nya, tapi kalo dimasukin fragment kurang tau aku
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
 
         homeBinding = FragmentHomeBinding.inflate(inflater, container, false)
+
+        val carouselView = binding.carouselView
+
+        carouselView.pageCount = simpleImage.size
+        carouselView.setImageListener{ position, imageView ->
+            imageView.setImageResource(simpleImage[position])
+        }
+
         return binding.root
+
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -43,11 +48,15 @@ class HomeFragment : Fragment() {
         }
 
         if (activity != null) {
-            homeViewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
 
-            val listProducer = homeViewModel.getRecomended()
+            val factory = ViewModelFactory.getInstance(requireActivity())
+            val homeViewModel = ViewModelProvider(this, factory).get(HomeViewModel::class.java)
             val homeAdapter = HomeAdapter()
-            homeAdapter.setRecommended(listProducer)
+
+            homeViewModel.getRecommended().observe(viewLifecycleOwner, { data ->
+                homeAdapter.setRecommended(data)
+                homeAdapter.notifyDataSetChanged()
+            })
 
             with(binding.rvRecommended) {
                 layoutManager = LinearLayoutManager(context)
@@ -62,14 +71,4 @@ class HomeFragment : Fragment() {
         super.onDestroy()
         homeBinding = null
     }
-//    val carouselImages = intArrayOf(
-//        R.drawable.ikm_1,
-//        R.drawable.ikm_2,
-//        R.drawable.ikm_3,
-//        R.drawable.ikm_4
-//    )
-//
-//    val imageListener = ImageListener {position, imageView ->
-//        imageView.setImageResource(carouselImages[position])
-//    }
 }

@@ -18,7 +18,6 @@ class HomeAdapter: RecyclerView.Adapter<HomeAdapter.HomeViewHolder>() {
         this.listRecommended.addAll(recommended)
     }
 
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HomeViewHolder {
         val itemSellerBinding = ItemSellerBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return HomeViewHolder(itemSellerBinding)
@@ -41,7 +40,7 @@ class HomeAdapter: RecyclerView.Adapter<HomeAdapter.HomeViewHolder>() {
 
                 itemView.setOnClickListener {
                     val intent = Intent(itemView.context, DetailActivity::class.java)
-                    intent.putExtra(DetailActivity.EXTRA_PRODUCER, content.title)
+                    intent.putExtra(DetailActivity.EXTRA_PRODUCER, content.id)
                     itemView.context.startActivity(intent)
                 }
             }
