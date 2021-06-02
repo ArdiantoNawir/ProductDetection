@@ -25,7 +25,8 @@
         android:theme="@style/Theme.ProductDetection">
         <activity android:name=".ui.capture.CaptureActivity" />
         <activity android:name=".SplashScreenActivity" />
-        <activity android:name=".ui.detail.DetailActivity" />
+        <activity android:name=".ui.detail.DetailActivity"
+            android:parentActivityName=".MainActivity"/>
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

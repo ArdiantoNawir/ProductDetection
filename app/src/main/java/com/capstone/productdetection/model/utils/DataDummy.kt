@@ -86,6 +86,8 @@ object DataDummy {
                 "Daur ulang adalah proses untuk menjadikan suatu bahan bekas menjadi bahan baru dengan tujuan mencegah adanya sampah yang sebenarnya dapat menjadi sesuatu yang berguna, mengurangi penggunaan bahan baku yang baru, mengurangi penggunaan energi, mengurangi polusi, kerusakan lahan, dan emisi gas rumah kaca jika dibandingkan dengan proses pembuatan barang baru."
             )
         )
+
+
         return seller
     }
 }

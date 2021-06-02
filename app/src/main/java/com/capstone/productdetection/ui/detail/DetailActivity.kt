@@ -44,7 +44,7 @@ class DetailActivity : AppCompatActivity() {
 
     private fun showDetailProducer(producer: DataModel) {
         detailProducer.tvTitle.text = producer.title
-        detailProducer.tvDescription.text = producer.desc
+        detailProducer.tvDesc.text = producer.desc
         detailProducer.tvAlamat.text = producer.location
         Glide.with(this)
             .load(producer.image)

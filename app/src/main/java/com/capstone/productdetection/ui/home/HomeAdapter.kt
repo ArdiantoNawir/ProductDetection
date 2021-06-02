@@ -36,6 +36,7 @@ class HomeAdapter: RecyclerView.Adapter<HomeAdapter.HomeViewHolder>() {
             with(binding) {
                 title.text = content.title
                 alamat.text = content.location
+                desc.text = content.desc
                 Glide.with(itemView.context).load(content.image).into(imgPoster)
 
                 itemView.setOnClickListener {
