@@ -1,10 +1,8 @@
-package com.capstone.productdetection.Source
+package com.capstone.productdetection.source
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.capstone.productdetection.model.utils.DataModel
-import com.capstone.productdetection.model.utils.DetailResult
-import com.capstone.productdetection.model.utils.RecommendedResult
+import com.capstone.productdetection.model.utils.*
 
 class RecommendedRepository private constructor(private val remoteDataSource: RemoteDataSource): RecommendedDataSource {
 
@@ -60,5 +58,29 @@ class RecommendedRepository private constructor(private val remoteDataSource: Re
 
         }, id)
         return getDetail
+    }
+
+    override fun loadMaterial(name: String): LiveData<MaterialModel> {
+        val getMaterial = MutableLiveData<MaterialModel>()
+        remoteDataSource.getMaterial(object : RemoteDataSource.LoadMaterial {
+            override fun onDetailMaterialReceived(materialResponse: MaterialResult?) {
+                lateinit var detailMaterial: MaterialModel
+
+                materialResponse?.apply {
+                    val listMaterial = ArrayList<String>()
+                    for (material in material) {
+                        listMaterial.add(material.name)
+                    }
+
+                    detailMaterial = MaterialModel(
+                        name = name,
+                        material = listMaterial
+                    )
+                    getMaterial.postValue(detailMaterial)
+                }
+            }
+
+        }, name)
+        return getMaterial
     }
 }

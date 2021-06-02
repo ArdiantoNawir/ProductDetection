@@ -1,8 +1,8 @@
 package com.capstone.productdetection.di
 
 import android.content.Context
-import com.capstone.productdetection.Source.RecommendedRepository
-import com.capstone.productdetection.Source.RemoteDataSource
+import com.capstone.productdetection.source.RecommendedRepository
+import com.capstone.productdetection.source.RemoteDataSource
 
 object Injection {
 

@@ -1,7 +1,8 @@
-package com.capstone.productdetection.Source
+package com.capstone.productdetection.source
 
 import android.util.Log
 import com.capstone.productdetection.model.utils.DetailResult
+import com.capstone.productdetection.model.utils.MaterialResult
 import com.capstone.productdetection.model.utils.RecommendedResponse
 import com.capstone.productdetection.model.utils.RecommendedResult
 import com.capstone.productdetection.service.ApiConfig
@@ -57,11 +58,32 @@ class RemoteDataSource {
             })
     }
 
+    fun getMaterial(callback: LoadMaterial, name: String) {
+        ApiConfig.getApiService().getMaterial(name)
+            .enqueue(object : Callback<MaterialResult> {
+                override fun onResponse(
+                    call: Call<MaterialResult>,
+                    response: Response<MaterialResult>
+                ) {
+                    callback.onDetailMaterialReceived(response.body())
+                }
+
+                override fun onFailure(call: Call<MaterialResult>, t: Throwable) {
+                    Log.e(TAG, "Failure ${t.message}")
+                }
+
+            })
+    }
+
     interface LoadRecommended {
         fun onAllRecommendedReceived(response: List<RecommendedResult>?)
     }
 
     interface LoadDetailRecommended {
         fun onDetailRecommendedReceived(recommendedDetail: DetailResult?)
+    }
+
+    interface LoadMaterial {
+        fun onDetailMaterialReceived(materialResponse: MaterialResult?)
     }
 }

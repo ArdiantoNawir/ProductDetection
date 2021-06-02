@@ -3,10 +3,9 @@ package com.capstone.productdetection
 import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.capstone.productdetection.Source.RecommendedRepository
+import com.capstone.productdetection.source.RecommendedRepository
 import com.capstone.productdetection.di.Injection
 import com.capstone.productdetection.ui.detail.DetailViewModel
-import com.capstone.productdetection.ui.favorite.FavoriteViewModel
 import com.capstone.productdetection.ui.home.HomeViewModel
 
 class ViewModelFactory(private val mRecommendedRepository: RecommendedRepository): ViewModelProvider.NewInstanceFactory(){

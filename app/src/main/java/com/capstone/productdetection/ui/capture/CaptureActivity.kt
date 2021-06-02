@@ -15,7 +15,9 @@ import android.widget.ImageView
 import android.widget.Toast
 import androidx.core.content.FileProvider
 import androidx.exifinterface.media.ExifInterface
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import com.capstone.productdetection.ViewModelFactory
 import com.capstone.productdetection.databinding.ActivityCaptureBinding
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -42,8 +44,6 @@ class CaptureActivity : AppCompatActivity() {
     private lateinit var inputImageView: ImageView
     private lateinit var currentPhotoPath: String
 
-    val finalTextResult = ""
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         captureBinding = ActivityCaptureBinding.inflate(layoutInflater)
@@ -57,6 +57,7 @@ class CaptureActivity : AppCompatActivity() {
             }
         }
         inputImageView = captureBinding.ivImage
+
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
@@ -100,17 +101,19 @@ class CaptureActivity : AppCompatActivity() {
 
         val resultToDisplay = results.map {
             val category = it.categories.first()
-            val text = "${category.label},${category.displayName} ${category.score.times(100).toInt()}%"
+            val text = "${category.label}, ${category.score.times(100).toInt()}%"
 
+            val factory = ViewModelFactory.getInstance(this)
+            val viewModel = ViewModelProvider(this@CaptureActivity, factory)[CaptureViewModel::class.java]
+            val captureAdapter = CaptureAdapter()
 
-            captureBinding.result.text = finalTextResult
+            viewModel.getMaterial(text).observe(this, { data ->
+//                captureAdapter.setList(data)
+//                captureAdapter.notifyDataSetChanged()
+            })
             DetectionResult(it.boundingBox, text)
 
         }
-
-
-
-
         val imgWithResult = drawDetectionResult(bitmap, resultToDisplay)
         runOnUiThread {
             inputImageView.setImageBitmap(imgWithResult)
@@ -130,10 +133,6 @@ class CaptureActivity : AppCompatActivity() {
         }
     }
 
-    /**
-     * getCapturedImage():
-     *      Decodes and crops the captured image from camera.
-     */
     private fun getCapturedImage(): Bitmap {
         // Get the dimensions of the View
         val targetW: Int = inputImageView.width
