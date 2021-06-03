@@ -19,9 +19,9 @@ class HomeFragment : Fragment() {
     private val binding get() = homeBinding!!
 
     private var simpleImage = intArrayOf(
-        R.drawable.akrilik,
-        R.drawable.berrysablon,
-        R.drawable.daur
+        R.drawable.ikm_1,
+        R.drawable.ikm_2,
+        R.drawable.ikm_3
     )
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {

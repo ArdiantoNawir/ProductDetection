@@ -65,6 +65,7 @@ class RemoteDataSource {
                     call: Call<MaterialResult>,
                     response: Response<MaterialResult>
                 ) {
+                    Log.e(TAG, "SUccess Remote")
                     callback.onDetailMaterialReceived(response.body())
                 }
 
