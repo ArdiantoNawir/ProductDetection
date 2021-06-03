@@ -15,9 +15,7 @@ import android.widget.ImageView
 import android.widget.Toast
 import androidx.core.content.FileProvider
 import androidx.exifinterface.media.ExifInterface
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
-import com.capstone.productdetection.ViewModelFactory
 import com.capstone.productdetection.databinding.ActivityCaptureBinding
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -87,13 +85,13 @@ class CaptureActivity : AppCompatActivity() {
         val image = TensorImage.fromBitmap(bitmap)
 
         val options = ObjectDetector.ObjectDetectorOptions.builder()
-            .setMaxResults(1)
+            .setMaxResults(3)
             .setScoreThreshold(0.5f)
             .build()
 
         val detector = ObjectDetector.createFromFileAndOptions(
             this,
-            "lite-model_efficientdet_lite0_detection_metadata_1.tflite",
+            "furniture-detector_with_metadata.tflite",
             options
         )
 
@@ -103,14 +101,16 @@ class CaptureActivity : AppCompatActivity() {
             val category = it.categories.first()
             val text = "${category.label}, ${category.score.times(100).toInt()}%"
 
-            val factory = ViewModelFactory.getInstance(this)
-            val viewModel = ViewModelProvider(this@CaptureActivity, factory)[CaptureViewModel::class.java]
-            val captureAdapter = CaptureAdapter()
 
-            viewModel.getMaterial(text).observe(this, { data ->
+//            val factory = ViewModelFactory.getInstance(this)
+//            val viewModel = ViewModelProvider(this@CaptureActivity, factory)[CaptureViewModel::class.java]
+//            val captureAdapter = CaptureAdapter()
+
+//            viewModel.getMaterial(text).observe(this, { data ->
 //                captureAdapter.setList(data)
 //                captureAdapter.notifyDataSetChanged()
-            })
+//            })
+
             DetectionResult(it.boundingBox, text)
 
         }
@@ -119,7 +119,6 @@ class CaptureActivity : AppCompatActivity() {
             inputImageView.setImageBitmap(imgWithResult)
         }
     }
-
 
     private fun setViewAndDetect(bitmap: Bitmap) {
         // Display capture image
@@ -236,7 +235,7 @@ class CaptureActivity : AppCompatActivity() {
      */
     private fun drawDetectionResult(bitmap: Bitmap, detectionResults: List<DetectionResult>): Bitmap {
         val outputBitmap = bitmap.copy(Bitmap.Config.ARGB_8888, true)
-//        val canvas = Canvas(outputBitmap)
+        val canvas = Canvas(outputBitmap)
         val pen = Paint()
         pen.textAlign = Paint.Align.LEFT
 
@@ -246,7 +245,7 @@ class CaptureActivity : AppCompatActivity() {
             pen.strokeWidth = 8F
             pen.style = Paint.Style.STROKE
             val box = it.boundingBox
-//            canvas.drawRect(box, pen)
+            canvas.drawRect(box, pen)
 
 
             val tagSize = Rect(0, 0, 0, 0)
@@ -263,12 +262,12 @@ class CaptureActivity : AppCompatActivity() {
             // adjust the font size so texts are inside the bounding box
             if (fontSize < pen.textSize) pen.textSize = fontSize
 
-//            var margin = (box.width() - tagSize.width()) / 2.0F
-//            if (margin < 0F) margin = 0F
-//            canvas.drawText(
-//                it.text, box.left + margin,
-//                box.top + tagSize.height().times(1F), pen
-//            )
+            var margin = (box.width() - tagSize.width()) / 2.0F
+            if (margin < 0F) margin = 0F
+            canvas.drawText(
+                it.text, box.left + margin,
+                box.top + tagSize.height().times(1F), pen
+            )
         }
         return outputBitmap
     }
