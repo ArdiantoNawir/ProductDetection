@@ -48,6 +48,7 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/muli"
         android:text="@string/alamat"
+        android:textColor="@color/black"
         app:layout_constraintStart_toEndOf="@+id/img_poster"
         app:layout_constraintTop_toBottomOf="@+id/title"
         android:layout_marginStart="10dp"
@@ -62,6 +63,7 @@
         android:textSize="14sp"
         android:lines="2"
         android:text="@string/desc"
+        android:textColor="@color/black"
         app:layout_constraintTop_toBottomOf="@+id/img_poster" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -15,7 +15,10 @@ import android.widget.ImageView
 import android.widget.Toast
 import androidx.core.content.FileProvider
 import androidx.exifinterface.media.ExifInterface
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.capstone.productdetection.ViewModelFactory
 import com.capstone.productdetection.databinding.ActivityCaptureBinding
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -85,13 +88,13 @@ class CaptureActivity : AppCompatActivity() {
         val image = TensorImage.fromBitmap(bitmap)
 
         val options = ObjectDetector.ObjectDetectorOptions.builder()
-            .setMaxResults(3)
+            .setMaxResults(1)
             .setScoreThreshold(0.5f)
             .build()
 
         val detector = ObjectDetector.createFromFileAndOptions(
             this,
-            "furniture-detector_with_metadata.tflite",
+            "model.tflite",
             options
         )
 
@@ -100,23 +103,27 @@ class CaptureActivity : AppCompatActivity() {
         val resultToDisplay = results.map {
             val category = it.categories.first()
             val text = "${category.label}, ${category.score.times(100).toInt()}%"
-
-
-//            val factory = ViewModelFactory.getInstance(this)
-//            val viewModel = ViewModelProvider(this@CaptureActivity, factory)[CaptureViewModel::class.java]
-//            val captureAdapter = CaptureAdapter()
-
-//            viewModel.getMaterial(text).observe(this, { data ->
-//                captureAdapter.setList(data)
-//                captureAdapter.notifyDataSetChanged()
-//            })
-
             DetectionResult(it.boundingBox, text)
 
         }
         val imgWithResult = drawDetectionResult(bitmap, resultToDisplay)
         runOnUiThread {
             inputImageView.setImageBitmap(imgWithResult)
+
+            val factory = ViewModelFactory.getInstance(this)
+            val viewModel = ViewModelProvider(this@CaptureActivity, factory)[CaptureViewModel::class.java]
+            val captureAdapter = CaptureAdapter()
+
+            viewModel.getMaterial(results[0].categories[0].label.trim()).observe(this, { data ->
+                captureAdapter.setList(data.material)
+                captureAdapter.notifyDataSetChanged()
+            })
+
+            with(captureBinding.rvListMaterial) {
+                layoutManager = LinearLayoutManager(this@CaptureActivity)
+                setHasFixedSize(true)
+                adapter = captureAdapter
+            }
         }
     }
 

@@ -1,6 +1,5 @@
 package com.capstone.productdetection.source
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.capstone.productdetection.model.utils.*
@@ -67,11 +66,10 @@ class RecommendedRepository private constructor(private val remoteDataSource: Re
             override fun onDetailMaterialReceived(materialResponse: MaterialResult?) {
                 lateinit var detailMaterial: MaterialModel
 
-                Log.e("agya","success Repo")
                 materialResponse?.apply {
                     val listMaterial = ArrayList<String>()
                     for (material in material) {
-                        listMaterial.add(material.name)
+                        listMaterial.add(material)
                     }
 
                     detailMaterial = MaterialModel(
