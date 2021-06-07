@@ -1,11 +1,10 @@
 package com.capstone.productdetection.ui.detail
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
-import com.capstone.productdetection.R
 import com.capstone.productdetection.ViewModelFactory
 import com.capstone.productdetection.databinding.ActivityDetailBinding
 import com.capstone.productdetection.databinding.ContentDetailBinding
@@ -18,6 +17,7 @@ class DetailActivity : AppCompatActivity() {
     }
 
     private lateinit var detailProducerBinding: ContentDetailBinding
+    private lateinit var detailViewModel: DetailViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,9 +38,10 @@ class DetailActivity : AppCompatActivity() {
             val producerId = extras.getInt(EXTRA_PRODUCER)
 
             viewModel.getDetail(producerId).observe(this, { results ->
-                showDetailProducer(results)
+                results.data?.let { showDetailProducer(it) }
             })
         }
+        setFav()
     }
 
     private fun showDetailProducer(producer: DataModel) {
@@ -54,5 +55,20 @@ class DetailActivity : AppCompatActivity() {
         Glide.with(this)
             .load(producer.image)
             .into(detailProducerBinding.imgPosterHeader)
+    }
+
+    private fun setFav() {
+        val choose = intent.getStringExtra(EXTRA_PRODUCER)
+        if (choose != null) {
+            detailProducerBinding.buttonFav.setOnClickListener {
+                when (choose) {
+                    "MOVIE" -> {
+                        detailViewModel.setFavorite()
+                    }
+
+
+                }
+            }
+        }
     }
 }
