@@ -3,17 +3,11 @@ package com.capstone.productdetection.ui.favorite
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.paging.PagedList
-import com.capstone.productdetection.model.utils.DataModel
-import com.capstone.productdetection.source.RecommendedRepository
 
-class FavoriteViewModel(private val recommendedRepository: RecommendedRepository) : ViewModel() {
+class FavoriteViewModel : ViewModel() {
 
-    fun getFavListRecommended(): LiveData<PagedList<DataModel>> =
-        recommendedRepository.getRecommendedFav()
-
-    fun setFavListRecommended(recommended: DataModel) {
-        val newState = !recommended.isFav
-        recommendedRepository.setRecommendedFav(recommended, newState)
+    private val _text = MutableLiveData<String>().apply {
+        value = "Ini niatnya mau kubuat biar hasil rekomendasi seller ntar bisa disimpen di halaman favorite ini"
     }
+    val text: LiveData<String> = _text
 }

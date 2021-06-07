@@ -1,11 +1,11 @@
 package com.capstone.productdetection.source
 
 import android.util.Log
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import com.capstone.productdetection.model.utils.*
+import com.capstone.productdetection.model.utils.DetailResult
+import com.capstone.productdetection.model.utils.MaterialResult
+import com.capstone.productdetection.model.utils.RecommendedResponse
+import com.capstone.productdetection.model.utils.RecommendedResult
 import com.capstone.productdetection.service.ApiConfig
-import com.capstone.productdetection.utils.EspressoIdlingResource
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -24,48 +24,38 @@ class RemoteDataSource {
             }
     }
 
-    fun getListRecommended(): LiveData<APIResponse<List<RecommendedResult>>> {
-        EspressoIdlingResource.increment()
-        val result = MutableLiveData<APIResponse<List<RecommendedResult>>>()
+    fun getListRecommended(callback: LoadRecommended) {
         ApiConfig.getApiService().getProducer()
             .enqueue(object : Callback<RecommendedResponse> {
                 override fun onResponse(
                     call: Call<RecommendedResponse>,
                     response: Response<RecommendedResponse>
                 ) {
-                    result.value = APIResponse.success(response.body()?.results as List<RecommendedResult>)
-                    EspressoIdlingResource.decrement()
+                    callback.onAllRecommendedReceived(response.body()?.results)
                 }
 
                 override fun onFailure(call: Call<RecommendedResponse>, t: Throwable) {
                     Log.e(TAG, "Failure ${t.message}")
-                    EspressoIdlingResource.decrement()
                 }
 
             })
-        return result
     }
 
-    fun getDetailRecommended(id: Int): LiveData<APIResponse<DetailResult>> {
-        EspressoIdlingResource.increment()
-        val result = MutableLiveData<APIResponse<DetailResult>>()
+    fun getDetailRecommended(callback: LoadDetailRecommended, id: Int) {
         ApiConfig.getApiService().getDetail(id)
             .enqueue(object : Callback<DetailResult> {
                 override fun onResponse(
                     call: Call<DetailResult>,
                     response: Response<DetailResult>
                 ) {
-                    result.value = APIResponse.success(response.body() as DetailResult)
-                    EspressoIdlingResource.decrement()
+                    callback.onDetailRecommendedReceived(response.body())
                 }
 
                 override fun onFailure(call: Call<DetailResult>, t: Throwable) {
-                    Log.e(TAG, "Failure to get Detail Movies : ${t.message}")
-                    EspressoIdlingResource.decrement()
+                    Log.e(TAG, "Failure ${t.message}")
                 }
 
             })
-        return result
     }
 
     fun getMaterial(callback: LoadMaterial, name: String) {
@@ -83,6 +73,14 @@ class RemoteDataSource {
                 }
 
             })
+    }
+
+    interface LoadRecommended {
+        fun onAllRecommendedReceived(response: List<RecommendedResult>?)
+    }
+
+    interface LoadDetailRecommended {
+        fun onDetailRecommendedReceived(recommendedDetail: DetailResult?)
     }
 
     interface LoadMaterial {

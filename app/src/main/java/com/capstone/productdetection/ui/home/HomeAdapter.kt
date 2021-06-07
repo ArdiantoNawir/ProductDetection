@@ -3,27 +3,19 @@ package com.capstone.productdetection.ui.home
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.lifecycle.LiveData
-import androidx.paging.PagedList
-import androidx.paging.PagedListAdapter
-import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.capstone.productdetection.databinding.ItemSellerBinding
 import com.capstone.productdetection.model.utils.DataModel
 import com.capstone.productdetection.ui.detail.DetailActivity
-import com.capstone.productdetection.vo.Resource
 
-class HomeAdapter: PagedListAdapter<DataModel, HomeAdapter.HomeViewHolder>(DIFF_CALLBACK) {
+class HomeAdapter: RecyclerView.Adapter<HomeAdapter.HomeViewHolder>() {
 
-    companion object {
-        private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<DataModel>() {
-            override fun areItemsTheSame(oldItem: DataModel, newItem: DataModel): Boolean =
-                oldItem.id == newItem.id
+    private var listRecommended = ArrayList<DataModel>()
 
-            override fun areContentsTheSame(oldItem: DataModel, newItem: DataModel): Boolean =
-                oldItem == newItem
-        }
+    fun setRecommended(recommended: List<DataModel>) {
+        this.listRecommended.clear()
+        this.listRecommended.addAll(recommended)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HomeViewHolder {
@@ -32,9 +24,11 @@ class HomeAdapter: PagedListAdapter<DataModel, HomeAdapter.HomeViewHolder>(DIFF_
     }
 
     override fun onBindViewHolder(holder: HomeViewHolder, position: Int) {
-        val items = getItem(position)
-        if (items != null) holder.bind(items)
+        val items = listRecommended[position]
+        holder.bind(items)
     }
+
+    override fun getItemCount(): Int = listRecommended.size
 
     class HomeViewHolder(private val binding: ItemSellerBinding): RecyclerView.ViewHolder(binding.root) {
         fun bind(content: DataModel) {

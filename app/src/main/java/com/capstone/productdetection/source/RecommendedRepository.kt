@@ -1,108 +1,64 @@
 package com.capstone.productdetection.source
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.paging.LivePagedListBuilder
-import androidx.paging.PagedList
-import com.capstone.productdetection.datasource.LocalDS
-import com.capstone.productdetection.datasource.NetworkBoundResource
 import com.capstone.productdetection.model.utils.*
-import com.capstone.productdetection.utils.AppExecutors
-import com.capstone.productdetection.vo.Resource
 
-class RecommendedRepository private constructor(
-    private val remoteDataSource: RemoteDataSource,
-    private val localDS: LocalDS,
-    private val appExecutors: AppExecutors
-) : RecommendedDataSource {
+class RecommendedRepository private constructor(private val remoteDataSource: RemoteDataSource): RecommendedDataSource {
 
     companion object {
         @Volatile
         private var instance: RecommendedRepository? = null
 
-        fun getInstance(
-            remoteData: RemoteDataSource,
-            localDS: LocalDS,
-            appExecutors: AppExecutors
-        ): RecommendedRepository =
+        fun getInstance(remoteData: RemoteDataSource): RecommendedRepository =
             instance ?: synchronized(this) {
-                RecommendedRepository(remoteData, localDS, appExecutors).apply { instance = this }
+                RecommendedRepository(remoteData).apply { instance = this }
             }
     }
 
-    override fun loadRecommended(): LiveData<Resource<PagedList<DataModel>>> {
-        return object :
-            NetworkBoundResource<PagedList<DataModel>, List<RecommendedResult>>(appExecutors) {
+    override fun loadRecommended(): LiveData<List<DataModel>> {
+        val getRecommended = MutableLiveData<List<DataModel>>()
+        remoteDataSource.getListRecommended(object : RemoteDataSource.LoadRecommended {
+            override fun onAllRecommendedReceived(response: List<RecommendedResult>?) {
+                val list = ArrayList<DataModel>()
 
-            override fun shouldFetch(data: PagedList<DataModel>?): Boolean =
-                data == null || data.isEmpty()
-
-            override fun loadFromDb(): LiveData<PagedList<DataModel>> {
-                val conf = PagedList.Config.Builder()
-                    .setEnablePlaceholders(false)
-                    .setInitialLoadSizeHint(4)
-                    .setPageSize(4)
-                    .build()
-                return LivePagedListBuilder(localDS.getDataRecommended(), conf).build()
-            }
-
-            override fun createCall(): LiveData<APIResponse<List<RecommendedResult>>> =
-                remoteDataSource.getListRecommended()
-
-            override fun saveCallResult(data: List<RecommendedResult>) {
-                val listRecommended = ArrayList<DataModel>()
-                for (dataRecommended in data) {
-                    dataRecommended.apply {
-                        val recommended = DataModel(
-                            id, title, location, image, desc
-                        )
-                        listRecommended.add(recommended)
+                if (response != null) {
+                    for(recommended in response) {
+                        recommended.apply {
+                            val listed = DataModel(
+                                id, image, title, location, desc
+                            )
+                            list.add(listed)
+                        }
                     }
+                    getRecommended.postValue(list)
                 }
-                localDS.insertRecommended(listRecommended)
             }
-        }.asLiveData()
+
+        })
+        return getRecommended
     }
 
-    override fun loadDetailRecommended(id: Int): LiveData<Resource<DataModel>> {
-        return object : NetworkBoundResource<DataModel, DetailResult>(appExecutors) {
-
-            override fun shouldFetch(data: DataModel?): Boolean =
-                data == null
-
-            override fun loadFromDb(): LiveData<DataModel> = localDS.getRecommendedId(id)
-            override fun createCall(): LiveData<APIResponse<DetailResult>> =
-                remoteDataSource.getDetailRecommended(id)
-
-            override fun saveCallResult(data: DetailResult) {
-                with(data) {
-                    val dataDetail = DataModel(
-                        id = this.id,
+    override fun loadDetailRecommended(id: Int): LiveData<DataModel> {
+        val getDetail = MutableLiveData<DataModel>()
+        remoteDataSource.getDetailRecommended(object : RemoteDataSource.LoadDetailRecommended {
+            override fun onDetailRecommendedReceived(recommendedDetail: DetailResult?) {
+                lateinit var detailRecommended : DataModel
+                recommendedDetail?.apply {
+                    detailRecommended = DataModel(
+                        id = id,
                         title = title,
-                        location = location,
                         image = image,
-                        desc = desc,
-                        isFav = false
+                        desc =  desc,
+                        location = location
                     )
-                    localDS.updateFavRecommended(dataDetail, false)
+                    getDetail.postValue(detailRecommended)
                 }
             }
-        }.asLiveData()
-    }
 
-    override fun setRecommendedFav(recommended: DataModel, state: Boolean) =
-        appExecutors.diskIO().execute {
-            localDS.updateFavRecommended(recommended, state)
-        }
-
-    override fun getRecommendedFav(): LiveData<PagedList<DataModel>> {
-        val conf = PagedList.Config.Builder()
-            .setEnablePlaceholders(false)
-            .setInitialLoadSizeHint(4)
-            .setPageSize(4)
-            .build()
-
-        return LivePagedListBuilder(localDS.getFavRecommended(), conf).build()
+        }, id)
+        return getDetail
     }
 
     override fun loadMaterial(name: String): LiveData<MaterialModel> {
@@ -111,6 +67,7 @@ class RecommendedRepository private constructor(
             override fun onDetailMaterialReceived(materialResponse: MaterialResult?) {
                 lateinit var detailMaterial: MaterialModel
 
+                Log.e("agya","success Repo")
                 materialResponse?.apply {
                     val listMaterial = ArrayList<String>()
                     for (material in material) {
