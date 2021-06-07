@@ -8,9 +8,9 @@ import com.capstone.productdetection.model.utils.MaterialModel
 
 class CaptureAdapter: RecyclerView.Adapter<CaptureAdapter.CaptureViewHolder>() {
 
-    private var listResult = ArrayList<String>()
+    private var listResult = ArrayList<MaterialModel>()
 
-    fun setList(list: List<String>) {
+    fun setList(list: List<MaterialModel>) {
         this.listResult.clear()
         this.listResult.addAll(list)
     }
@@ -28,9 +28,9 @@ class CaptureAdapter: RecyclerView.Adapter<CaptureAdapter.CaptureViewHolder>() {
     override fun getItemCount(): Int = listResult.size
 
     class CaptureViewHolder(private val binding: ItemResultBinding): RecyclerView.ViewHolder(binding.root) {
-        fun bind(content: String) {
+        fun bind(content: MaterialModel) {
             with(binding) {
-                itemBrgjd.text = content
+                itemBrgjd.text = content.material.toString()
             }
         }
 

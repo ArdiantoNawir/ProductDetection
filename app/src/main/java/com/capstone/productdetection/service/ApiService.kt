@@ -18,7 +18,7 @@ interface ApiService {
         @Path("producer_id") id: Int
     ): Call<DetailResult>
 
-    @GET("materials/{original_name}")
+    @GET("material/{original_name}")
     fun getMaterial(
         @Path("original_name") name: String
     ): Call<MaterialResult>

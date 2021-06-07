@@ -5,7 +5,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.capstone.productdetection.source.RecommendedRepository
 import com.capstone.productdetection.di.Injection
-import com.capstone.productdetection.ui.capture.CaptureViewModel
 import com.capstone.productdetection.ui.detail.DetailViewModel
 import com.capstone.productdetection.ui.home.HomeViewModel
 
@@ -28,10 +27,6 @@ class ViewModelFactory(private val mRecommendedRepository: RecommendedRepository
         return when {
             modelClass.isAssignableFrom(HomeViewModel::class.java) -> {
                 HomeViewModel(mRecommendedRepository) as T
-            }
-
-            modelClass.isAssignableFrom(CaptureViewModel::class.java) -> {
-                CaptureViewModel(mRecommendedRepository) as T
             }
 
             modelClass.isAssignableFrom(DetailViewModel::class.java) -> {

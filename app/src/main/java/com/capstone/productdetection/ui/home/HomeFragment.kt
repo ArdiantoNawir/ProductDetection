@@ -21,9 +21,9 @@ class HomeFragment : Fragment() {
     private lateinit var homeAdapter: HomeAdapter
 
     private var simpleImage = intArrayOf(
-        R.drawable.ikm_1,
-        R.drawable.ikm_2,
-        R.drawable.ikm_3
+        R.drawable.akrilik,
+        R.drawable.berrysablon,
+        R.drawable.daur
     )
 
     override fun onCreateView(

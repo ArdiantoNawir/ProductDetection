@@ -114,7 +114,7 @@ class RecommendedRepository private constructor(
                 materialResponse?.apply {
                     val listMaterial = ArrayList<String>()
                     for (material in material) {
-                        listMaterial.add(material)
+                        listMaterial.add(material.name)
                     }
 
                     detailMaterial = MaterialModel(
