@@ -37,6 +37,7 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/helvetica"
         android:text="@string/namaikm"
+        android:textColor="@color/black"
         app:layout_constraintStart_toEndOf="@+id/img_poster"
         app:layout_constraintTop_toTopOf="@+id/cardview"
         android:layout_marginStart="10dp"

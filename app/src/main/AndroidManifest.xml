@@ -24,16 +24,17 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ProductDetection">
         <activity android:name=".ui.capture.CaptureActivity" />
-        <activity android:name=".SplashScreenActivity" />
-        <activity android:name=".ui.detail.DetailActivity"
-            android:parentActivityName=".MainActivity"/>
-        <activity android:name=".MainActivity">
+
+        <activity android:name=".SplashScreenActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".ui.detail.DetailActivity"
+            android:parentActivityName=".MainActivity"/>
+        <activity android:name=".MainActivity"/>
 
         <provider
             android:authorities="com.capstone.productdetection.fileprovider"

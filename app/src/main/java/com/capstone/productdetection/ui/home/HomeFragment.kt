@@ -14,7 +14,6 @@ import com.capstone.productdetection.databinding.FragmentHomeBinding
 
 class HomeFragment : Fragment() {
 
-    private lateinit var homeViewModel: HomeViewModel
     private var homeBinding: FragmentHomeBinding? = null
     private val binding get() = homeBinding!!
 
