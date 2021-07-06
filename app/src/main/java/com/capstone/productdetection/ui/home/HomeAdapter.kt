@@ -9,7 +9,7 @@ import com.capstone.productdetection.databinding.ItemSellerBinding
 import com.capstone.productdetection.model.utils.DataModel
 import com.capstone.productdetection.ui.detail.DetailActivity
 
-class HomeAdapter: RecyclerView.Adapter<HomeAdapter.HomeViewHolder>() {
+class HomeAdapter : RecyclerView.Adapter<HomeAdapter.HomeViewHolder>() {
 
     private var listRecommended = ArrayList<DataModel>()
 
@@ -19,7 +19,8 @@ class HomeAdapter: RecyclerView.Adapter<HomeAdapter.HomeViewHolder>() {
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HomeViewHolder {
-        val itemSellerBinding = ItemSellerBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val itemSellerBinding =
+            ItemSellerBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return HomeViewHolder(itemSellerBinding)
     }
 
@@ -30,7 +31,8 @@ class HomeAdapter: RecyclerView.Adapter<HomeAdapter.HomeViewHolder>() {
 
     override fun getItemCount(): Int = listRecommended.size
 
-    class HomeViewHolder(private val binding: ItemSellerBinding): RecyclerView.ViewHolder(binding.root) {
+    class HomeViewHolder(private val binding: ItemSellerBinding) :
+        RecyclerView.ViewHolder(binding.root) {
         fun bind(content: DataModel) {
             with(binding) {
                 title.text = content.title

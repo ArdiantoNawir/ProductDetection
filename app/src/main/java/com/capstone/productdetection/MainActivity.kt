@@ -2,37 +2,42 @@ package com.capstone.productdetection
 
 import android.content.Intent
 import android.os.Bundle
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.navigation.findNavController
-import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.setupActionBarWithNavController
+import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.capstone.productdetection.databinding.ActivityMainBinding
 import com.capstone.productdetection.ui.capture.CaptureActivity
 
 class MainActivity : AppCompatActivity() {
-
-    private lateinit var binding: ActivityMainBinding
+    private val binding by lazy {
+        ActivityMainBinding.inflate(layoutInflater)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val navView: BottomNavigationView = binding.navView
+        val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment_activity_main) as NavHostFragment
+        val navController = navHostFragment.navController
 
-        val navController = findNavController(R.id.nav_host_fragment_activity_main2)
+        binding.navView.setupWithNavController(navController)
+        binding.navView.setOnNavigationItemSelectedListener {
+            return@setOnNavigationItemSelectedListener when(it.itemId) {
+                R.id.navigation_home -> {
+                    navController.navigate(R.id.navigation_home)
+                    true
+                }
+                R.id.navigation_favorite -> {
+                    navController.navigate(R.id.navigation_favorite)
+                    true
+                }
+                else -> false
+            }
+        }
 
-        val appBarConfiguration = AppBarConfiguration.Builder(
-            R.id.navigation_home, R.id.navigation_favorite
-        ).build()
+        binding.navView.background = null
 
-        setupActionBarWithNavController(navController, appBarConfiguration)
-        navView.setupWithNavController(navController)
-
-        binding.fabutton.setOnClickListener {
+        binding.faButton.setOnClickListener {
                 val intent = Intent(this, CaptureActivity::class.java)
                 startActivity(intent)
         }

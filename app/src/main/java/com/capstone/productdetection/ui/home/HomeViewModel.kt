@@ -7,7 +7,5 @@ import com.capstone.productdetection.model.utils.DataModel
 
 class HomeViewModel(private val recommendedRepository: RecommendedRepository) : ViewModel() {
 
-//    fun getRecommended(): List<DataModel> = DataDummy.generateSeller()
-
     fun getRecommended(): LiveData<List<DataModel>> = recommendedRepository.loadRecommended()
 }

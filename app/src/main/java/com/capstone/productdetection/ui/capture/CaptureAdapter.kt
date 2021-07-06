@@ -4,7 +4,6 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.capstone.productdetection.databinding.ItemResultBinding
-import com.capstone.productdetection.model.utils.MaterialModel
 
 class CaptureAdapter: RecyclerView.Adapter<CaptureAdapter.CaptureViewHolder>() {
 
@@ -30,7 +29,7 @@ class CaptureAdapter: RecyclerView.Adapter<CaptureAdapter.CaptureViewHolder>() {
     class CaptureViewHolder(private val binding: ItemResultBinding): RecyclerView.ViewHolder(binding.root) {
         fun bind(content: String) {
             with(binding) {
-                itemBrgjd.text = content
+                itemResults.text = content
             }
         }
 

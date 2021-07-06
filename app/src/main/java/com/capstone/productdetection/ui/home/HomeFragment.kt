@@ -23,14 +23,18 @@ class HomeFragment : Fragment() {
         R.drawable.ikm_3
     )
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
 
         homeBinding = FragmentHomeBinding.inflate(inflater, container, false)
 
         val carouselView = binding.carouselView
 
         carouselView.pageCount = simpleImage.size
-        carouselView.setImageListener{ position, imageView ->
+        carouselView.setImageListener { position, imageView ->
             imageView.setImageResource(simpleImage[position])
         }
 
